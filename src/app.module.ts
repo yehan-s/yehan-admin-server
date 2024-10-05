@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { AuthModule } from './auth/auth.module'
+import { AuthModule } from './modules/auth/auth.module'
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n'
 import * as path from 'path'
 // import { RedisModule } from './redis/redis.module'
 import { LoggerService } from './services/logger.service'
-import { UserModule } from './user/user.module'
+import { UserModule } from './modules/user/user.module'
 import { PrismaService } from './services/prisma.service'
+import { RsaService } from './services/rsa.service'
+import { createClient } from 'redis'
 
 const mode = process.env.NODE_ENV || 'development'
 
@@ -32,7 +34,29 @@ const mode = process.env.NODE_ENV || 'development'
     UserModule,
   ],
   controllers: [],
-  providers: [LoggerService, PrismaService],
-  exports: [LoggerService, PrismaService],
+  providers: [
+    LoggerService,
+    PrismaService,
+    RsaService,
+    {
+      provide: 'REDIS_CLIENT',
+      async useFactory() {
+        const client = createClient({
+          socket: {
+            host: 'localhost',
+            port: 6379,
+          },
+        })
+        try {
+          await client.connect()
+        } catch (error) {
+          console.error('Redis connection error:', error)
+          throw error // 重新抛出错误，以便 Nest.js 处理
+        }
+        return client
+      },
+    },
+  ],
+  exports: [LoggerService, PrismaService, RsaService],
 })
 export class AppModule {}

@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import {
-  IsDate,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator'
+import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 export class UserDTO {
   @ApiProperty({ description: 'id' })
@@ -43,15 +37,12 @@ export class UserDTO {
 
   @ApiProperty({ description: '头像', nullable: true })
   @IsOptional()
-  @IsString()
   avatar?: string
 
   @ApiProperty({ description: '性别(0:女, 1:男)', nullable: true })
   @IsOptional()
-  @IsInt()
   sex?: number
 
   @ApiProperty({ description: '密码' })
-  @IsString()
   password: string
 }

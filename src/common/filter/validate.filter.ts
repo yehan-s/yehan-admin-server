@@ -13,7 +13,7 @@ export class ValidateExceptionFilter implements ExceptionFilter {
   constructor(private readonly loggerService: LoggerService) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
-    console.log('进入过滤器')
+    // console.log('进入过滤器')
     const ctx = host.switchToHttp()
     const response = ctx.getResponse<Response>()
     const request = ctx.getRequest<Request>()

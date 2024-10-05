@@ -8,7 +8,7 @@ import {
   Query,
 } from '@nestjs/common'
 import { UserService } from './user.service'
-import { UserDTO } from './dto/user.dto'
+import { UserDTO } from '../user/dto/user.dto'
 import { ApiOperation } from '@nestjs/swagger'
 
 @Controller('user')

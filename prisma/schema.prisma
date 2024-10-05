@@ -25,3 +25,15 @@ model User {
   sex         Int?
   password    String
 }
+
+model Login_Log {
+  id       String   @id @default(uuid())
+  userName String?
+  ip       String?
+  address  String?
+  browser  String?
+  os       String?
+  status   Boolean?
+  message  String?
+  createAt DateTime @default(now())
+}
